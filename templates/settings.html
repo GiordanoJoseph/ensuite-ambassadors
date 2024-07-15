@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="top-banner">
+        <img src="{{ url_for('static', filename='images/icons/Menu Vector.svg') }}" id="menuVector" class="banner-vector" alt="vector" onclick="toggleModal()">
+        <img src="{{ url_for('static', filename='images/icons/X Vector.svg') }}" id="xVector" class="banner-vector" alt="vector" style="display: none;" onclick="toggleModal()">
+        <img src="{{ url_for('static', filename='images/ENSUITE Text Logo.svg') }}" class="logo" alt="logo">
+        <a href="{{ url_for('select_avatar') }}">
+            <img src="{{ url_for('static', filename='images/avatars/' + avatar) }}" class="avatar" alt="avatar">
+        </a>
+    </div>
+    <h1>Settings</h1>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="centered">
+        <div class="login-form settings-form">
+            <h2>Change Name</h2>
+            <form action="{{ url_for('change_name') }}" method="POST">
+                <label for="new_name">New Name:</label>
+                <div class="settings-inline" style="margin-bottom: 65px;">
+                    <input type="text" id="new_name" name="new_name" style="text-align: left;" required>
+                    <button type="submit" class="login-button inline-button">✓</button>
+                </div>
+            </form>
+    
+            <h2>Reset Password</h2>
+            <form action="{{ url_for('change_password') }}" method="POST">
+                <label for="current_password">Current Password:</label>
+                <input type="password" id="current_password" name="current_password" style="text-align: left; margin-bottom: 5px;" required>
+                <label for="new_password">New Password:</label>
+                <div class="settings-inline">
+                    <input type="password" id="new_password" name="new_password" style="text-align: left;" required>
+                    <button type="submit" class="login-button inline-button">✓</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <a href="{{ url_for('dashboard') }}" class="modal-button">Dashboard</a>
+            <a href="{{ url_for('affiliates') }}" class="modal-button">Affiliates</a>
+            <a href="{{ url_for('leaderboard') }}" class="modal-button">Leaderboard</a>
+            <a href="{{ url_for('settings') }}" class="modal-button">Settings</a>
+            <a href="{{ url_for('logout') }}" class="modal-button">Logout</a>
+        </div>
+    </div>
+
+    <script>
+        var modal = document.getElementById("myModal");
+        var menuVector = document.getElementById("menuVector");
+        var xVector = document.getElementById("xVector");
+
+        function toggleModal() {
+            if (modal.style.display === "block") {
+                modal.style.display = "none";
+                menuVector.style.display = "inline";
+                xVector.style.display = "none";
+            } else {
+                modal.style.display = "block";
+                menuVector.style.display = "none";
+                xVector.style.display = "inline";
+            }
+        }
+
+        function closeModal(event) {
+            if (event.target == modal) {
+                toggleModal();
+            }
+        }
+
+        window.addEventListener('click', closeModal);
+        window.addEventListener('touchend', closeModal);
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 500); // Wait for fade out animation to complete
+                }, 2500); // 3000 milliseconds = 3 seconds
+            });
+        });
+    </script>
+    <script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+    
+        // Initial call to set the viewport height
+        setViewportHeight();
+    
+        // Update the viewport height on resize
+        window.addEventListener('resize', setViewportHeight);
+    </script>    
+</body>
+</html>

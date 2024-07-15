@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="top-banner">
+        <img src="../static/images/Ensuite Ambassador Logo.svg" class="logo ambassador-logo" alt="logo">
+    </div>
+
+    <div class="centered">
+        <h1>Congratulations!</h1>
+        <p class="welcome-message">Welcome to the<br><span class="welcome-message-span">Ensuite Ambassador Program!</span> We're so excited to have you.</p>
+        <a href="{{ url_for('select_avatar') }}" class="button">Get Started</a>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    <script>
+        function startConfetti() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+        window.onload = function() {
+            startConfetti();
+        };
+    </script>
+    <script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+    
+        // Initial call to set the viewport height
+        setViewportHeight();
+    
+        // Update the viewport height on resize
+        window.addEventListener('resize', setViewportHeight);
+    </script>   
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="top-banner">
+        <img src="../static/images/icons/Menu Vector.svg" id="menuVector" class="banner-vector" alt="vector" onclick="toggleModal()">
+        <img src="../static/images/icons/X Vector.svg" id="xVector" class="banner-vector" alt="vector" style="display: none;" onclick="toggleModal()">
+        <img src="../static/images/ENSUITE Text Logo.svg" class="logo" alt="logo">
+        <a href="{{ url_for('select_avatar') }}">
+            <img src="{{ url_for('static', filename='images/avatars/' + avatar) }}" class="avatar" alt="avatar">
+        </a>
+    </div>
+    <h1>Dashboard</h1>
+    <div class="content" style="justify-content: center;">
+        <div class="dashboard-circle">
+            <h2>${{ total_earnings }}</h2>
+            <p>Commission</p>
+        </div>
+        
+        <div class="your-stats">
+            <h2>Your Stats</h2>
+            <p>Students: <span>0</span></p>
+            <p>Ambassadors: <span>{{ num_referred_ambassadors }}</span></p>
+            <p class="commission-info" style="display: flex; align-items: center;">
+                Commission:&nbsp;<span>${{ commission }} USD/signup</span>
+                <img src="../static/images/icons/Info Vector.svg" id="infoVector" class="info-vector" style="height: 16px; margin-bottom: 4px; margin-left: 5px;" alt="info" onclick="toggleInfoModal()">
+            </p>
+        </div>
+        
+
+        <div class="dynamic-code">
+            <button id="revealButton" class="revealButton" onclick="revealCode()">Reveal Code</button>
+            <p id="ambassadorCode" class="ambassadorCode" style="display:none;">{{ ambassador_code }}</p>
+        </div>    
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <a href="{{ url_for('dashboard') }}" class="modal-button">Dashboard</a>
+            <a href="{{ url_for('affiliates') }}" class="modal-button">Affiliates</a>
+            <a href="{{ url_for('leaderboard') }}" class="modal-button">Leaderboard</a>
+            <a href="{{ url_for('settings') }}" class="modal-button">Settings</a>
+            <a href="{{ url_for('logout') }}" class="modal-button">Logout</a>
+        </div>
+    </div>
+
+    <div id="infoModal" class="info-modal">
+        <div class="info-modal-content" style="max-width: 75%;">
+            <h2 class="modal-title" style="text-align: center;">Increase Commission</h2>
+            <div class="instructions">
+                <h2 style="margin-left: 3px; margin-right: 3px;">1</h2>
+                <p>By default, you'll earn $8 USD for every student that signs up for Ensuite with your ambassador code</p>
+            </div>
+            <div class="instructions">
+                <h2>2</h2>
+                <p>Earn an extra $2 USD/signup for every 5 ambassadors that sign up with your ambassador code (first 10 ambassadors)</p>
+            </div>
+            <div class="instructions">
+                <h2 style="margin-right: -1px;">3</h2>
+                <p>Earn bonus commission of up to $3 USD/signup based on your ambassador rank. Click "i" on the leaderboard to learn more!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var modal = document.getElementById("myModal");
+        var infoModal = document.getElementById("infoModal");
+        var menuVector = document.getElementById("menuVector");
+        var xVector = document.getElementById("xVector");
+        var infoVector = document.getElementById("infoVector");
+    
+        function toggleModal() {
+            if (modal.style.display === "block") {
+                modal.style.display = "none";
+                menuVector.style.display = "inline";
+                xVector.style.display = "none";
+            } else {
+                modal.style.display = "block";
+                menuVector.style.display = "none";
+                xVector.style.display = "inline";
+            }
+        }
+    
+        function toggleInfoModal() {
+            infoModal.style.display = "block";
+        }
+    
+        function closeModal(event) {
+            if (event.target == modal) {
+                toggleModal();
+            }
+            if (event.target == infoModal) {
+                infoModal.style.display = "none";
+            }
+        }
+    
+        window.addEventListener('click', closeModal);
+        window.addEventListener('touchend', closeModal);
+
+        function revealCode() {
+            const codeElement = document.getElementById('ambassadorCode');
+            const originalCode = codeElement.textContent;
+            const revealButton = document.getElementById('revealButton');
+            
+            revealButton.style.display = 'none';
+            codeElement.style.display = 'block';
+            
+            let iterations = 0;
+            const maxIterations = 23;
+            const interval = 58; // milliseconds
+    
+            const scrambleInterval = setInterval(() => {
+                codeElement.textContent = originalCode
+                    .split('')
+                    .map((letter, index) => {
+                        if (index < iterations) {
+                            return originalCode[index];
+                        }
+                        return String.fromCharCode(65 + Math.floor(Math.random() * 26));
+                    })
+                    .join('');
+    
+                if (iterations >= originalCode.length) {
+                    clearInterval(scrambleInterval);
+                    codeElement.textContent = originalCode;
+                    codeElement.classList.remove('scrambled');
+                } else if (iterations < maxIterations) {
+                    iterations += 1 / 3;
+                } else {
+                    iterations += 1;
+                }
+    
+                codeElement.classList.add('scrambled');
+            }, interval);
+        }
+    </script>
+    <script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+    
+        // Initial call to set the viewport height
+        setViewportHeight();
+    
+        // Update the viewport height on resize
+        window.addEventListener('resize', setViewportHeight);
+    </script>    
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="top-banner">
+        <img src="../static/images/icons/Menu Vector.svg" id="menuVector" class="banner-vector" alt="vector" onclick="toggleModal()">
+        <img src="../static/images/icons/X Vector.svg" id="xVector" class="banner-vector" alt="vector" style="display: none;" onclick="toggleModal()">
+        <img src="../static/images/ENSUITE Text Logo.svg" class="logo" alt="logo">
+        <a href="{{ url_for('select_avatar') }}">
+            <img src="{{ url_for('static', filename='images/avatars/' + user_avatar) }}" class="avatar" alt="avatar">
+        </a>
+    </div>
+    <div class="leaderboard-heading">
+        <h3>Leaderboard</h3>
+        <img src="../static/images/icons/Info Vector.svg" id="infoVector" class="info-vector" alt="vector" onclick="toggleInfoModal()">
+        </div>
+    <div class="content">
+        <div class="leaderboard-text">
+            <p>Ambassador</p>
+            <p>Referrals</p>
+        </div>
+        <div class="affiliate-log">
+            {% for entry in leaderboard_data %}
+                <div class="affiliate-entry {{ entry[3] }}">
+                    <img src="{{ url_for('static', filename='images/avatars/' + entry[1]) }}" class="affiliate-avatar" alt="avatar">
+                    <div class="affiliate-name">{{ entry[0] }}</div>
+                    <div class="affiliate-referrals">{{ entry[2] }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <a href="{{ url_for('dashboard') }}" class="modal-button">Dashboard</a>
+            <a href="{{ url_for('affiliates') }}" class="modal-button">Affiliates</a>
+            <a href="{{ url_for('leaderboard') }}" class="modal-button">Leaderboard</a>
+            <a href="{{ url_for('settings') }}" class="modal-button">Settings</a>
+            <a href="{{ url_for('logout') }}" class="modal-button">Logout</a>
+        </div>
+    </div>
+
+    <div id="infoModal" class="info-modal">
+        <div class="info-modal-content">
+            <h2 class="modal-title">Ambassador Rankings</h2>
+            <div class="ranking-item">
+                <div class="icon-container">
+                    <img src="../static/images/icons/Diamond Vector.svg" alt="Diamond" class="ranking-icon">
+                </div>
+                <div class="ranking-text">
+                    <p class="ranking-name">Diamond <span class="ranking-percent">(Top 10%)</span></p>
+                    <p class="ranking-points">+ $3 USD/signup</p>
+                </div>
+            </div>
+            <div class="ranking-item">
+                <div class="icon-container">
+                    <img src="../static/images/icons/Gold Vector.svg" alt="Gold" class="ranking-icon">
+                </div>
+                <div class="ranking-text">
+                    <p class="ranking-name">Gold <span class="ranking-percent">(Top 25%)</span></p>
+                    <p class="ranking-points">+ $2 USD/signup</p>
+                </div>
+            </div>
+            <div class="ranking-item" style="margin-bottom: 0;">
+                <div class="icon-container">
+                    <img src="../static/images/icons/Silver Vector.svg" alt="Silver" class="ranking-icon">
+                </div>
+                <div class="ranking-text">
+                    <p class="ranking-name">Silver <span class="ranking-percent">(Top 50%)</span></p>
+                    <p class="ranking-points">+ $1 USD/signup</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var modal = document.getElementById("myModal");
+        var infoModal = document.getElementById("infoModal");
+        var menuVector = document.getElementById("menuVector");
+        var xVector = document.getElementById("xVector");
+        var infoVector = document.getElementById("infoVector");
+    
+        function toggleModal() {
+            if (modal.style.display === "block") {
+                modal.style.display = "none";
+                menuVector.style.display = "inline";
+                xVector.style.display = "none";
+            } else {
+                modal.style.display = "block";
+                menuVector.style.display = "none";
+                xVector.style.display = "inline";
+            }
+        }
+    
+        function toggleInfoModal() {
+            infoModal.style.display = "block";
+        }
+    
+        function closeModal(event) {
+            if (event.target == modal) {
+                toggleModal();
+            }
+            if (event.target == infoModal) {
+                infoModal.style.display = "none";
+            }
+        }
+    
+        window.addEventListener('click', closeModal);
+        window.addEventListener('touchend', closeModal);
+    </script>
+    <script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+    
+        // Initial call to set the viewport height
+        setViewportHeight();
+    
+        // Update the viewport height on resize
+        window.addEventListener('resize', setViewportHeight);
+    </script>    
+</body>
+</html>

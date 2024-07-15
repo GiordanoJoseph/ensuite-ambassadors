@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="top-banner">
+        <img src="../static/images/Ensuite Ambassador Logo.svg" class="logo ambassador-logo" alt="logo">
+    </div>
+
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="centered">
+        <h1>Login</h1>
+        <form action="{{ url_for('login') }}" method="POST" class="login-form">
+            <input type="text" name="phone_number" placeholder="Phone number" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit" value="Login" class="login-button">Login</button>
+        </form>
+        <div class="index-link">
+            Don't have an account? <a href="{{ url_for('signup') }}">Sign up here</a>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 500); // Wait for fade out animation to complete
+                }, 2500); // 3000 milliseconds = 3 seconds
+            });
+        });
+    </script>
+    <script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+    
+        // Initial call to set the viewport height
+        setViewportHeight();
+    
+        // Update the viewport height on resize
+        window.addEventListener('resize', setViewportHeight);
+    </script>   
+</body>
+</html>

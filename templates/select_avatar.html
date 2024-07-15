@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Avatar</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="top-banner">
+        <img src="../static/images/Ensuite Ambassador Logo.svg" class="logo ambassador-logo" alt="logo">
+    </div>
+    
+    <h1>Select Your Avatar</h1>
+
+    <div class="content">
+        <form action="{{ url_for('select_avatar') }}" method="POST" class="avatar-form">
+            <div class="avatars-container">
+                <div class="avatars">
+                    {% for avatar in avatars %}
+                        <label>
+                            <input type="radio" name="avatar" value="{{ avatar }}">
+                            <img src="{{ url_for('static', filename='images/avatars/' + avatar) }}" alt="Avatar" class="avatar" onclick="selectAvatar('{{ avatar }}')">
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" name="submit" value="Select Avatar" class="login-button confirm-button">Confirm</button>
+        </form>
+    </div>
+    <script>
+        function selectAvatar(avatar) {
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => {
+                if (radio.value === avatar) {
+                    radio.checked = true;
+                }
+            });
+        }
+    </script>
+    <script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+    
+        // Initial call to set the viewport height
+        setViewportHeight();
+    
+        // Update the viewport height on resize
+        window.addEventListener('resize', setViewportHeight);
+    </script>    
+</body>
+</html>
