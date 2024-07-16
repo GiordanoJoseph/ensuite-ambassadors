@@ -21,7 +21,8 @@
                     {% for avatar in avatars %}
                         <label>
                             <input type="radio" name="avatar" value="{{ avatar }}">
-                            <img src="{{ url_for('static', filename='images/avatars/' + avatar) }}" alt="Avatar" class="avatar" onclick="selectAvatar('{{ avatar }}')">
+<!--                             <img src="{{ url_for('static', filename='images/avatars/' + avatar) }}" alt="Avatar" class="avatar" onclick="selectAvatar('{{ avatar }}')"> -->
+                                <img height="50px" width="50px" src="{{ url_for('static', filename='images/avatars/' + avatar) }}" alt="Avatar" class="avatar" onclick="selectAvatar('{{ avatar }}')">
                         </label>
                     {% endfor %}
                 </div>
